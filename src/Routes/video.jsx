@@ -53,7 +53,7 @@ function Pause(props) {
 
 function Video(props) {
   let oioi = props.kaka.apple;
-  const match = useMatch("/movie");
+  const match = useMatch("/");
   console.log(match);
 
   const opts = {
@@ -81,7 +81,7 @@ function Video(props) {
   }, [props.isPaused]);
 
   const _onReady = (event) => {
-    cElement = event;
+    //cElement = event;
     event.target.playVideo();
   };
 

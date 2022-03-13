@@ -191,7 +191,7 @@ const BigOverview = styled.p`
 const offset = 7;
 
 function Home() {
-  const navigatemd = useNavigate();
+  const navigate = useNavigate();
   const bigMovieMatch = useMatch("/movies/:movieId");
   const { scrollY } = useViewportScroll();
   const { data, isLoading } = useQuery<IGetMoviesResult>(
@@ -234,9 +234,9 @@ function Home() {
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const onBoxClicked = (movieId: number) => {
-    navigatemd(`/movies/${movieId}`);
+    navigate(`/movies/${movieId}`);
   };
-  const onOverlayClick = () => navigatemd("/");
+  const onOverlayClick = () => navigate("/");
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find(
@@ -309,6 +309,7 @@ function Home() {
                   ))}
               </Row>
               <motion.svg
+                key={index + 1}
                 whileHover="hover"
                 initial="normal"
                 variants={arrowVariants}
