@@ -51,6 +51,7 @@ export interface IVideo {
 export interface IGetMovieVideo {
   success?: boolean;
   id: number;
+
   results: IVideo[];
 }
 

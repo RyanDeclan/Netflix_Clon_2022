@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import YouTube from "react-youtube";
 import styled from "styled-components";
-import { useNavigate, useMatch } from "react-router-dom";
-
-import { useQuery } from "react-query";
+import { useViewportScroll } from "framer-motion";
+import { useRecoilValue } from "recoil";
+import { isCheckUrlAtom } from "./atoms";
 
 let cElement = null;
+
 function Pause(props) {
   const [isToggle, setIsToggle] = useState(true);
 
@@ -52,10 +53,9 @@ function Pause(props) {
 }
 
 function Video(props) {
-  let oioi = props.kaka.apple;
-  const match = useMatch("/");
-  console.log(match);
-
+  let trailer = props.bannerVideo;
+  const findUrlHome = useRecoilValue(isCheckUrlAtom);
+  const { scrollY } = useViewportScroll();
   const opts = {
     width: "100%",
     height: "1080vh",
@@ -66,28 +66,47 @@ function Video(props) {
       controls: 0,
       loop: 1,
       mute: 1,
-      playlist: `${oioi}`,
+      rel: 0,
+      playlist: `${trailer}`,
     },
   };
 
   useEffect(() => {
+    if (findUrlHome) {
+      cElement = null;
+    }
+  }, [findUrlHome]);
+
+  useEffect(() => {
     if (cElement) {
       props.isPaused
-        ? cElement.target.unMute() &&
-          cElement.target.setVolume(60) &&
-          (cElement = null)
-        : cElement.target.mute() && (cElement = null);
+        ? cElement.target.unMute() && cElement.target.setVolume(60)
+        : cElement.target.mute();
     }
   }, [props.isPaused]);
 
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 480) {
+        cElement?.target.pauseVideo();
+      } else {
+        cElement?.target.playVideo();
+      }
+    });
+  }, [scrollY]);
+
   const _onReady = (event) => {
-    //cElement = event;
     event.target.playVideo();
+    cElement = event;
   };
 
   return (
     <>
-      <YouTube videoId={`${oioi}`} opts={opts} onReady={_onReady} />
+      {props.Loding ? (
+        <h1>loding..</h1>
+      ) : (
+        <YouTube videoId={`${trailer}`} opts={opts} onReady={_onReady} />
+      )}
     </>
   );
 }
@@ -120,16 +139,21 @@ const BgControlBtn = styled.div`
   height: 100%;
 `;
 
-function Tpp(apple) {
+function MainTrailer(props) {
   const [isPaused, setIsPaused] = useState(false);
   const togglePause = () => {
     setIsPaused(!isPaused);
   };
+
   return (
     <>
       <BackGround>
         <BgYoutube>
-          <Video isPaused={isPaused} kaka={apple} />
+          <Video
+            isPaused={isPaused}
+            bannerVideo={props.bannerVideo}
+            Loding={props.videoLoading}
+          />
         </BgYoutube>
         <BgAssistant>
           <BgOverView></BgOverView>
@@ -141,4 +165,4 @@ function Tpp(apple) {
     </>
   );
 }
-export default Tpp;
+export default MainTrailer;

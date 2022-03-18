@@ -3,6 +3,8 @@ import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { cElementAtom, isCheckUrlAtom } from "../Routes/atoms";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -11,7 +13,7 @@ const Nav = styled(motion.nav)`
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 20;
+  z-index: 99;
   font-size: 14px;
   padding: 20px 60px;
   color: white;
@@ -111,6 +113,9 @@ interface IForm {
 }
 
 function Header() {
+  const setUrlAtom = useSetRecoilState(isCheckUrlAtom);
+  const nullAtom = useRecoilValue(cElementAtom);
+
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("tv");
@@ -119,6 +124,7 @@ function Header() {
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const { scrollY } = useViewportScroll();
+
   const toggleSearch = () => {
     if (searchOpen) {
       inputAnimation.start({
@@ -144,9 +150,11 @@ function Header() {
 
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data: IForm) => {
-    console.log(data);
     history(`/search?keyword=${data.keyword}`);
   };
+  const toggleAtomTrue = () => setUrlAtom(true);
+
+  console.log(nullAtom);
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
@@ -166,7 +174,9 @@ function Header() {
 
         <Items>
           <Item>
-            <Link to="/">Home {homeMatch && <Circle layoutId="circle" />}</Link>
+            <Link to="/" onClick={toggleAtomTrue}>
+              Home {homeMatch && <Circle layoutId="circle" />}
+            </Link>
           </Item>
           <Item>
             <Link to="tv">
