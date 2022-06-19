@@ -180,8 +180,11 @@ function BoxVideo(props) {
   };
   const movieId = props.id;
   const { data: videoData, isLoading: videoLoading } = useQuery(
-    ["bannermovies", movieId],
-    () => getMovieVideo(movieId)
+    ["boxPreViewMovie", movieId],
+    () => getMovieVideo(movieId),
+    {
+      staleTime: 60 * 3000,
+    }
   );
   const bannerVideo = videoData?.results[0]?.key;
 

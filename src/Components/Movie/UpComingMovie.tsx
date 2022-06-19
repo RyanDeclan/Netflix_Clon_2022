@@ -252,7 +252,7 @@ function UpComginMovie() {
           viewBox="0 0 256 512"
           style={{
             position: "absolute",
-            zIndex: "-99",
+            zIndex: "1",
             width: "50",
             height: "60",
             right: "2",

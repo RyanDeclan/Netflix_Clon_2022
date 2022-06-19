@@ -230,7 +230,9 @@ function BigBoxInfo({ soso: data }: Toto) {
                 height: "3vh",
                 backgroundColor: "red",
                 borderRadius: "0.2vw",
+                
               }}
+              alt="18"
             />
           ) : grade === "PG-13" ? (
             <img
@@ -241,9 +243,11 @@ function BigBoxInfo({ soso: data }: Toto) {
                 backgroundColor: "green",
                 borderRadius: "0.2vw",
               }}
+              alt="13"
             />
           ) : grade === "PG" ? (
             <img
+             alt="pg"
               style={{
                 width: "1.5vw",
                 height: "3vh",

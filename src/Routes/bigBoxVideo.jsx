@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { useQuery } from "react-query";
 import { IGetMovieVideo, getMovieVideo } from "../api";
+import {client} from "../index";
 
 const TopCover = styled.div`
   background: linear-gradient(
@@ -35,17 +36,22 @@ const BottomCover = styled.div`
 const Title = styled.div`
   font-size: 20px;
 `;
-
 function BigBoxVideo(props) {
-  const movieId = props.id;
+  /* const movieId = props.id;
   const { data: videoData, isLoading: videoLoading } = useQuery(
     ["bannermovies", movieId],
     () => getMovieVideo(movieId)
-  );
+  ); */
+  const movieId = props.id;
+  console.log(movieId);
+  console.log(typeof(movieId))
+  const data = client.getQueryData(["boxPreViewMovie",Number(`${movieId}`)])
+  console.log(['boxPreViewMovie', `${movieId}`])
+  console.log(data)
 
-  const bannerVideo = videoData?.results[0]?.key;
+  // const bannerVideo = data?.results[0]?.key;
 
-  let trailer = bannerVideo;
+  // let trailer = bannerVideo;
 
   const opts = {
     width: "100%",
@@ -58,7 +64,7 @@ function BigBoxVideo(props) {
       loop: 1,
       mute: 0,
       rel: 0,
-      playlist: `${trailer}`,
+      // playlist: `${trailer}`,
     },
   };
 
@@ -71,7 +77,7 @@ function BigBoxVideo(props) {
     <>
       <TopCover></TopCover>
 
-      <YouTube videoId={`${trailer}`} opts={opts} onReady={_onReady} />
+      <YouTube videoId={`${null}`} opts={opts} onReady={_onReady} />
 
       <BottomCover></BottomCover>
     </>
