@@ -9,12 +9,11 @@ import Search from "./Routes/Search";
 import Header from "./Components/Header";
 import Error from "./Components/error/Error";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { BrowserRouter } from "react-router-dom";
+
 
 function App() {
   return (
     <>
-    
         <Router>
           <Header />
           <Routes>
@@ -31,7 +30,6 @@ function App() {
           </Routes>
         </Router>
         <ReactQueryDevtools initialIsOpen={true} />
- 
     </>
   );
 }
