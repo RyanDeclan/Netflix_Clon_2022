@@ -9,6 +9,7 @@ function About() {
       >
         {" "}
         about
+        hi
       </h1>
     </>
   );

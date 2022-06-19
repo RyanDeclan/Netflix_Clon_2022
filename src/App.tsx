@@ -18,7 +18,7 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" element={<PreHome />}></Route>
+            <Route path={`${process.env.PUBLIC_URL}/`} element={<PreHome />}></Route>
             <Route path="home" element={<Home />}>
               <Route path="movies/:movieId" element={<Home/>} />
             </Route>
