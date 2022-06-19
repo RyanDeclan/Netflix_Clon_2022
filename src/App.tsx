@@ -14,7 +14,7 @@ import { BrowserRouter } from "react-router-dom";
 function App() {
   return (
     <>
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    
         <Router>
           <Header />
           <Routes>
@@ -31,7 +31,7 @@ function App() {
           </Routes>
         </Router>
         <ReactQueryDevtools initialIsOpen={true} />
-      </BrowserRouter>
+ 
     </>
   );
 }
