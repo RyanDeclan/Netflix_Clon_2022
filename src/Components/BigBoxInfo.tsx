@@ -12,7 +12,7 @@ import {
 } from "../api";
 import "../fonts/fonts.css";
 import { makeImagePath } from "../utils";
-
+import ErrorBoundary from "../Routes/errorboundary";
 export interface KaKa {
   certi: Resultss;
 }
@@ -85,7 +85,7 @@ const Year = styled.div`
 `;
 
 const Title = styled.span`
-  font-size: 3.2em;
+  font-size: 3.0em;
   font-weight: 800;
   position: absolute;
   top: 16%;
@@ -181,12 +181,19 @@ function BigBoxInfo({ soso: data }: Toto) {
 
   let grade = certification?.results.find((x) => x.iso_3166_1 === "US")
     ?.release_dates[0].certification;
-
+    if (!grade) {
+      grade = certification?.results.find((x) => x.iso_3166_1 === "GB")
+        ?.release_dates[0].certification;
+    }
+  if (!grade) {
+    grade = certification?.results.find((x) => x.iso_3166_1 === "FR")
+      ?.release_dates[0].certification;
+  }
   if (!grade) {
     grade = certification?.results.find((x) => x.iso_3166_1 === "US")
       ?.release_dates[1].certification;
   }
-
+  
   const { data: similarMovie, isLoading } = useQuery<ISimilarMovies>(
     ["similarMovie", data.id],
     async () => await getSimilarMovies(data.id)
@@ -214,6 +221,7 @@ function BigBoxInfo({ soso: data }: Toto) {
 
   return (
     <Wrapper>
+      <ErrorBoundary>
       <Title>
         {data.title.length > 10
           ? `${toto.shift()} ${toto.shift()}` + "\n" + `${toto.join(" ")}`
@@ -288,6 +296,7 @@ function BigBoxInfo({ soso: data }: Toto) {
           <Box key={x.id} bgphoto={makeImagePath(x.poster_path, "w500")}></Box>
         ))}
       </Similar>
+      </ErrorBoundary>
     </Wrapper>
   );
 }

@@ -10,13 +10,14 @@ import {
   IGetMovieVideo,
 } from "../api";
 import { makeImagePath } from "../utils";
-import MainTrailer from "./video";
+import MainTrailer from "./MainTrailer";
 import ErrorBoundary from "./errorboundary";
 import UpComginMovie from "../Components/Movie/UpComingMovie";
 import BoxVideo from "./boxVideo";
 import BigBoxVideo from "./bigBoxVideo";
 import BigBoxInfo from "../Components/BigBoxInfo";
 import "../fonts/fonts.css";
+import {client} from "../index"
 
 const Wrapper = styled.div`
   background: transparent;
@@ -177,28 +178,7 @@ const Overlay = styled(motion.div)`
   opacity: 1;
   z-index: 100;
 `;
-const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 400px;
-  border-radius: 15px;
-  overflow: hidden;
-`;
-const BigTitle = styled.h3`
-  color: ${(props) => props.theme.white};
-  padding: 25px;
-  position: relative;
-  top: -100px;
-  font-size: 40px;
-  font-weight: 400;
-`;
-const BigOverview = styled.p`
-  padding: 20px;
-  position: relative;
-  top: -80px;
-  color: ${(props) => props.theme.white};
-`;
+
 const offset = 6;
 
 function Home() {
@@ -268,12 +248,20 @@ function Home() {
     navigate(`/home/movies/${movieId}`);
   };
   const onOverlayClick = () => navigate("/home");
-  const clickedMovie =
+
+  const upcomingData = client.getQueryData<IGetMoviesResult>(["movies","upcoming"])
+  let clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find(
       (movie) => movie.id + "" === bigMovieMatch.params.movieId
     );
-
+  if(!clickedMovie){
+    clickedMovie = bigMovieMatch?.params.movieId &&
+    upcomingData?.results.find(
+      (movie) => movie.id + "" === bigMovieMatch.params.movieId
+    );
+  }  
+  
   const [hovers, setHovers] = useState(false);
   const [nums, setnums] = useState(0);
   const hoverBox = () => {
@@ -321,7 +309,7 @@ function Home() {
                 </Overview>
               </MainBox>
             </Banner>
-          </ErrorBoundary>
+          
           <Slider>
             <motion.svg
               whileHover="hover"
@@ -443,22 +431,14 @@ function Home() {
                     <>
                       <BigBoxVideo id={clickedMovie.id}></BigBoxVideo>
                       <BigBoxInfo soso={clickedMovie}></BigBoxInfo>
-                      {/*    <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top, black, transparent ), url(${makeImagePath(
-                            clickedMovie.backdrop_path,
-                            "w500"
-                          )})`,
-                        }}
-                      />
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <BigOverview>{clickedMovie.overview}</BigOverview> */}
+                      
                     </>
                   )}
                 </BigMovie>
               </>
             ) : null}
           </AnimatePresence>
+          </ErrorBoundary>
         </>
       )}
     </Wrapper>

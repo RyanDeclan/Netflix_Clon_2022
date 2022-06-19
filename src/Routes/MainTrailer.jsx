@@ -85,13 +85,22 @@ function Video(props) {
     }
   }, [props.isPaused]);
 
+  let yData = scrollY.get()
   useEffect(() => {
-    props.onHover
+    if(yData < 600){
+      cElement?.target.playVideo()
+      props.onHover
       ? cElement?.target.pauseVideo()
       : props.bigBox
-      ? cElement?.target.pauseVideo()
-      : cElement?.target.playVideo();
-  }, [props.onHover, props.bigBox]);
+        ? cElement?.target.pauseVideo()
+        : cElement?.target.playVideo();
+    }else{
+      cElement?.target.pauseVideo()
+    }
+    
+ 
+}, [props.onHover, props.bigBox, yData]);
+  
 
   /*   useEffect(() => {
     props.onHover

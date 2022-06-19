@@ -1,8 +1,5 @@
 import YouTube from "react-youtube";
 import styled from "styled-components";
-
-import { useQuery } from "react-query";
-import { IGetMovieVideo, getMovieVideo } from "../api";
 import {client} from "../index";
 
 const TopCover = styled.div`
@@ -37,21 +34,15 @@ const Title = styled.div`
   font-size: 20px;
 `;
 function BigBoxVideo(props) {
-  /* const movieId = props.id;
-  const { data: videoData, isLoading: videoLoading } = useQuery(
-    ["bannermovies", movieId],
-    () => getMovieVideo(movieId)
-  ); */
+  
   const movieId = props.id;
-  console.log(movieId);
-  console.log(typeof(movieId))
+  // api를 사용할 필요없이 바로 쿼리키를 통해서 가져옴 
   const data = client.getQueryData(["boxPreViewMovie",Number(`${movieId}`)])
-  console.log(['boxPreViewMovie', `${movieId}`])
-  console.log(data)
+  
 
-  // const bannerVideo = data?.results[0]?.key;
+  const bannerVideo = data?.results[0]?.key;
 
-  // let trailer = bannerVideo;
+  let trailer = bannerVideo;
 
   const opts = {
     width: "100%",
@@ -64,7 +55,7 @@ function BigBoxVideo(props) {
       loop: 1,
       mute: 0,
       rel: 0,
-      // playlist: `${trailer}`,
+      playlist: `${trailer}`,
     },
   };
 

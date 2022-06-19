@@ -1,10 +1,12 @@
 import { useQuery } from "react-query";
 import { getUpcomingMovies, IGetUpcomingMovie } from "../../api";
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion,} from "framer-motion";
 import styled from "styled-components";
 import { makeImagePath } from "../../utils";
 import { useState } from "react";
 import BoxVideo from "../../Routes/boxVideo";
+import {  useMatch, useNavigate } from "react-router-dom";
+
 
 //position : relative를 해줘야 밑에 스크롤이 안 생긴다.
 
@@ -63,6 +65,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center;
+  cursor: pointer;
 
 `;
 
@@ -105,6 +108,28 @@ const rowVariants = {
     x: isBack ? window.outerWidth - 6 : -window.outerWidth + 6,
   }),
 };
+
+const BigMovie = styled(motion.div)`
+  position: absolute;
+  width: 40vw;
+  height: 170vh;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-color: #0c0b0b;
+`;
+
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  z-index: 100;
+`;
+
+
 //아 파일이름하고 function을 같게 해야하구나
 function UpComginMovie() {
   const { data, isLoading } = useQuery<IGetUpcomingMovie>(
@@ -166,6 +191,20 @@ function UpComginMovie() {
       transition: { delay: 1.4, type: "tween", duration: 0.8 },
     },
   };
+  const navigate = useNavigate();
+
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/home/movies/${movieId}`);
+  };
+
+  const [bigBox, setBigBox] = useState(false);
+  const clickBigBox = () => {
+    setBigBox(true);
+  };
+  const clickOverlay = () => {
+    setBigBox(false);
+  };
+
 
   return (
     <>
@@ -207,7 +246,7 @@ function UpComginMovie() {
               .slice(offset * index, offset * index + offset)
               .map((x) => (
                 <Box
-                  layoutId={x.id + "33"}
+                  layoutId={x.id + ""}
                   key={x.id + "koko"}
                   whileHover="hover"
                   onHoverStart={onHovers}
@@ -215,6 +254,10 @@ function UpComginMovie() {
                   initial="normal"
                   variants={boxVariants}
                   transition={{ type: "tween" }}
+                  onClick={() => {
+                    onBoxClicked(x.id);
+                    clickBigBox();
+                  }}
                   bgphoto={makeImagePath(x.poster_path, "w500")}
                 >
                   <Info
@@ -263,6 +306,8 @@ function UpComginMovie() {
         >
           <path d="M64 448c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L178.8 256L41.38 118.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l160 160c12.5 12.5 12.5 32.75 0 45.25l-160 160C80.38 444.9 72.19 448 64 448z" />
         </motion.svg>
+
+      
       </Wrapper>
     </>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import Tpp from "./video";
+import Tpp from "./MainTrailer";
 import styled from "styled-components";
 
 const Banner = styled.div`
