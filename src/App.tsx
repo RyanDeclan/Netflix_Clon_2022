@@ -14,10 +14,10 @@ import { ReactQueryDevtools } from "react-query/devtools";
 function App() {
   return (
     <>
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <Header />
           <Routes>
-            <Route path={`${process.env.PUBLIC_URL}/`} element={<PreHome />}></Route>
+            <Route path="/" element={<PreHome />}></Route>
             <Route path="home" element={<Home />}>
               <Route path="movies/:movieId" element={<Home/>} />
             </Route>
