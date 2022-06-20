@@ -202,17 +202,20 @@ function Home() {
   const navigate = useNavigate();
   const bigMovieMatch = useMatch("/home/movies/:movieId");
   const { scrollY } = useViewportScroll();
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
+
+  const data = client.getQueryData<IGetMoviesResult>(["movies","nowPlaying"])
+  /* const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     async () => await getMovies()
-  );
+  ); */
   const movieId = data?.results[0].id;
   const movieBase = data?.results[0];
 
-  const { data: videoData, isLoading: videoLoading } = useQuery<IGetMovieVideo>(
+  /* const { data: videoData, isLoading: videoLoading } = useQuery<IGetMovieVideo>(
     ["bannermovies", movieId],
     () => getMovieVideo(movieId)
-  );
+  ); */
+  const videoData = client.getQueryData<IGetMovieVideo>(["bannermovies",Number(`${movieId}`)])
 
   let videDataResource = videoData?.results.find((x) => x.type === "Trailer");
   if (!videDataResource) {
@@ -251,6 +254,7 @@ function Home() {
   const onOverlayClick = () => navigate("/home");
 
   const upcomingData = client.getQueryData<IGetMoviesResult>(["movies","upcoming"])
+  const topRatedData = client.getQueryData<IGetMoviesResult>(["movies","TopRated"])
   let clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find(
@@ -259,6 +263,12 @@ function Home() {
   if(!clickedMovie){
     clickedMovie = bigMovieMatch?.params.movieId &&
     upcomingData?.results.find(
+      (movie) => movie.id + "" === bigMovieMatch.params.movieId
+    );
+  }  
+  if(!clickedMovie){
+    clickedMovie = bigMovieMatch?.params.movieId &&
+    topRatedData?.results.find(
       (movie) => movie.id + "" === bigMovieMatch.params.movieId
     );
   }  
@@ -274,23 +284,23 @@ function Home() {
   const hoverOut = () => {
     setHovers(false);
   };
+  const videoLoading = false
 
   return (
     <Wrapper>
-      {isLoading ? (
-        <Loader>Loading....</Loader>
-      ) : (
+      
+      
         <>
           <ErrorBoundary>
             <Banner>
-              {videoLoading ? (<Loader>Loading...</Loader>) : (
+              
                 <MainTrailer
                 bannerVideo={bannerVideo}
                 videoLoading={videoLoading}
                 onHover={onHover}
                 bigBox={bigBox}
               ></MainTrailer>
-              )}
+              
               
               <MainBox
                 transition={{ delay: 7, type: "tween", duration: 3 }}
@@ -442,7 +452,7 @@ function Home() {
           </AnimatePresence>
           </ErrorBoundary>
         </>
-      )}
+      
     </Wrapper>
   );
 }

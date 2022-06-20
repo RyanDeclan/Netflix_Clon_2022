@@ -127,6 +127,7 @@ function Header() {
   const { scrollY } = useViewportScroll();
 
   const toggleSearch = () => {
+    
     if (searchOpen) {
       inputAnimation.start({
         scaleX: 0,
@@ -137,6 +138,7 @@ function Header() {
       });
     }
     setSearchOpen((prev) => !prev);
+    
   };
   useEffect(() => {
     scrollY.onChange(() => {

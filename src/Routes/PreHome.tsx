@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import styled, {createGlobalStyle} from "styled-components";
 import { motion} from "framer-motion";
 import { Link } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getMovies, getMovieVideo, IGetMoviesResult, IGetMovieVideo } from "../api";
 
 const GlobalStyle = createGlobalStyle`
     padding: 0;
@@ -257,6 +259,19 @@ function PreHome() {
             }
 
         },[]);
+
+    const { data: firstVideoData, isLoading: videoIsLoading } = useQuery<IGetMoviesResult>(
+        ["movies", "nowPlaying"],
+        async () => await getMovies()
+        );
+        const movieId = firstVideoData?.results[0].id;
+        
+    
+        const { data: videoData, isLoading: videoLoading } = useQuery<IGetMovieVideo>(
+        ["bannermovies", movieId],
+        () => getMovieVideo(movieId)
+        );    
+
     return (
     <>
         <Body>

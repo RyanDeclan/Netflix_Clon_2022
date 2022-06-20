@@ -5,57 +5,64 @@ import {
   getMovieDetails,
   getReleaseDates,
   getSimilarMovies,
+  getTvContentRatings,
+  getTvCredits,
+  getTvDetail,
+  getTvSimilar,
   IGetMovieCredits,
   IMovieDetail,
   IReleaseDate,
   ISimilarMovies,
+  ITvCredit,
+  ITvDetail,
+  ITvRating,
+  ITvSimilar,
   Results,
 } from "../../api";
 import "../fonts/fonts.css";
 import { makeImagePath } from "../../utils";
 import ErrorBoundary from "../../Routes/errorboundary";
-export interface KaKa {
-  certi: Resultss;
+export interface kaka {
+  results: IResult[];
+  id:      number;
 }
 
-export interface Resultss {
+export interface IResult {
   iso_3166_1: string;
-  release_dates: ReleaseDate[];
+  rating:     string;
 }
 
-export interface ReleaseDate {
-  certification: string;
-  iso_639_1: ISO639_1;
-  release_date: Date;
-  type: number;
-  note?: string;
-}
-
-export enum ISO639_1 {
-  De = "de",
-  Empty = "",
-  Fr = "fr",
-}
 export interface Toto {
-  soso: Result;
+  base: Result;
 }
-
+/* 
 export interface Result {
-  poster_path: string;
-  adult: boolean;
-  overview: string;
-  release_date: Date;
-  genre_ids: number[];
-  id: number;
-  original_title: string;
-
-  title: string;
-  backdrop_path: string;
-  popularity: number;
-  vote_count: number;
-  video: boolean;
-  vote_average: number;
+  page:          number;
+  results:       Resultss[];
+  total_pages:   number;
+  total_results: number;
+  first_air_date: number;
+  id            : number;
+  title :  string;
 }
+ */
+export interface Result {
+  backdrop_path:     string;
+  first_air_date:    Date;
+  genre_ids:         number[];
+  id:                number;
+  name:              string;
+  origin_country:    string[];
+  original_language: string;
+  original_name:     string;
+  overview:          string;
+  popularity:        number;
+  poster_path:       null | string;
+  vote_average:      number;
+  vote_count:        number;
+}
+
+
 
 
 export enum OriginalLanguage {
@@ -173,66 +180,66 @@ const FistLine = styled.div`
   margin-top: 1vh;
 `;
 
-function TvBigBoxInfo({ soso: data }: Toto) {
-  const date = data.release_date;
+function TvBigBoxInfo({ base: data }: Toto) {
+  const year = data.first_air_date;
   const { data: certification, isLoading: certiIsLoding } =
-    useQuery<IReleaseDate>(
+    useQuery<ITvRating>(
       ["certifictions", data.id],
-      async () => await getReleaseDates(data.id)
+      async () => await getTvContentRatings(data.id)
     );
 
   let grade = certification?.results.find((x) => x.iso_3166_1 === "US")
-    ?.release_dates[0].certification;
+    ?.rating[0]
     if (!grade) {
       grade = certification?.results.find((x) => x.iso_3166_1 === "GB")
-        ?.release_dates[0].certification;
+        ?.rating[0]
     }
   if (!grade) {
     grade = certification?.results.find((x) => x.iso_3166_1 === "FR")
-      ?.release_dates[0].certification;
+      ?.rating[0]
   }
   if (!grade) {
     grade = certification?.results.find((x) => x.iso_3166_1 === "US")
-      ?.release_dates[1].certification;
+      ?.rating[1]
   }
   
-  const { data: similarMovie, isLoading } = useQuery<ISimilarMovies>(
-    ["similarMovie", data.id],
-    async () => await getSimilarMovies(data.id)
+  const { data: similarTv, isLoading } = useQuery<ITvSimilar>(
+    ["similarTv", data.id],
+    async () => await getTvSimilar(data.id)
   );
 
-  const { data: MovieDetails, isLoading: DeailsIsLoading } =
-    useQuery<IMovieDetail>(
-      ["MovieDetails", data.id],
-      async () => await getMovieDetails(data.id)
+  const { data: tvDetails, isLoading: DeailsIsLoading } =
+    useQuery<ITvDetail>(
+      ["TvDetails", data.id],
+      async () => await getTvDetail(data.id)
     );
 
-  const { data: MovieCredits, isLoading: CreditsIsLoading } =
-    useQuery<IGetMovieCredits>(
-      ["MovieCredits", data.id],
-      async () => await getMovieCredits(data.id)
+  const { data: TvCredits, isLoading: CreditsIsLoading } =
+    useQuery<ITvCredit>(
+      ["TvCredits", data.id],
+      async () => await getTvCredits(data.id)
     );
 
-  const director = MovieCredits?.crew?.find((x) => x.job === "Director");
+  const director = TvCredits?.crew?.find((x) => x.job === "Director");
 
-  let runtime = MovieDetails?.runtime;
+  let runtime = tvDetails?.episode_run_time;
 
-  let hour = runtime! / 60;
-  const min = runtime! % 60;
-  let toto = data.title.toString().split(" ");
+  
+  const min = runtime
+  let toto = data.name.toString().split(" ");
 
   return (
     <Wrapper>
       <ErrorBoundary>
       <Title>
-        {data.title.length > 10
+        {data.name.length > 10
           ? `${toto.shift()} ${toto.shift()}` + "\n" + `${toto.join(" ")}`
-          : data.title}
+          : data.name}
       </Title>
       <FistLine>
         <YearAndCertification>
-          <Year>{date?.toString().slice(0, 4)}</Year>
-          {grade === "R" ? (
+          <Year>{year?.toString().slice(0, 4)}</Year>
+          {grade === "TV-M" ? (
             <img
               src="https://img.icons8.com/ios/50/000000/18.png"
               style={{
@@ -267,7 +274,7 @@ function TvBigBoxInfo({ soso: data }: Toto) {
               src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/000000/external-All-miscellany-texts-and-badges-bearicons-detailed-outline-bearicons.png"
             />
           ) : null}
-          <RunTime>{`${parseInt(hour.toString())}시간  ${min}분`}</RunTime>
+          <RunTime>{`  ${min}분`}</RunTime>
         </YearAndCertification>
         {director ? (
           <div
@@ -284,8 +291,8 @@ function TvBigBoxInfo({ soso: data }: Toto) {
       <OverviewAndCastBox>
         <Overview>{data.overview ? data.overview : "준비중 입니다."}</Overview>
         <Cast>
-          {MovieCredits?.cast.slice(0, 2).map((x) => (
-            <BoxTow key={x.id} bgphoto={makeImagePath(x.profile_path, "w500")}>
+          {TvCredits?.cast.slice(0, 2).map((x) => (
+            <BoxTow key={x.id} bgphoto={makeImagePath(x.profile_path!, "w500")}>
               <ActName>{x.name}</ActName>
             </BoxTow>
           ))}
@@ -294,7 +301,7 @@ function TvBigBoxInfo({ soso: data }: Toto) {
 
       <SimilarTitle>비슷한 콘텐츠</SimilarTitle>
       <Similar>
-        {similarMovie?.results.slice(0, 16).map((x) => (
+        {similarTv?.results.slice(0, 16).map((x) => (
           <Box key={x.id} bgphoto={makeImagePath(x.poster_path, "w500")}></Box>
         ))}
       </Similar>

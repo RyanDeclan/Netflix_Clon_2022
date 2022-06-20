@@ -1,37 +1,72 @@
-import styled from "styled-components";
-import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
+import styled, {keyframes} from "styled-components"
+import "../fonts/fonts.css"
+
+
+
+const lower = keyframes`
+    0%,12%,18.999%,23%,31.999%,37%,44.999%,46%,49.999%,51%,58.999%,61%,68.999%,71%,85.999%,96%,100% {
+    opacity:0.99; text-shadow: 0 0 80px red,0 0 30px FireBrick,0 0 6px DarkRed;
+  }
+  19%,22.99%,32%,36.999%,45%,45.999%,50%,50.99%,59%,60.999%,69%,70.999%,86%,95.999% { 
+    opacity:0.4; text-shadow: none; 
+  }
+`
+
+const upper = keyframes`
+    0%,19.999%,22%,62.999%,64%, 64.999%,70%,100% {
+    opacity:.99; text-shadow: 0 0 80px #ffffff,0 0 30px #008000,0 0 6px #0000ff;
+  }
+  20%,21.999%,63%,63.999%,65%,69.999% {
+    opacity:0.4; text-shadow: none; 
+  }
+`
+
+
+const Wrapper = styled.div`
+  
+    padding: 40px;
+    margin-top:150px;
+    font-size: 75px;
+    font-family: 'Monoton', cursive;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0 0 80px red,0 0 30px FireBrick,0 0 6px DarkRed;
+    color: red;
+
+`
+
+
+const Err = styled.p`
+    margin:0;
+    color: #fff;
+    text-shadow: 0 0 80px #ffffff,0 0 30px #008000,0 0 6px #0000ff;
+    span {
+        animation: ${upper} 11s linear infinite;
+    }
+
+`
+
+const Code = styled.p`
+    margin:0;
+    span:nth-of-type(2){
+        animation: ${lower} 10s linear infinite;
+    }
+    span:nth-of-type(1) {
+        text-shadow: none;
+        opacity:.4;
+    }    
+   
+    
+`
+
+
 function Movie() {
   return (
-    <>
-      <h2>tv</h2>
-      <h1
-        style={{
-          fontSize: 300,
-        }}
-      >
-        Movie
-      </h1>
-
-      <svg
-        fill="white"
-        style={{
-          position: "absolute",
-          zIndex: "2",
-          width: "500",
-          height: "600",
-          bottom: "-300",
-          right: "2",
-          color: "black",
-        }}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 512 512"
-      >
-        <path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z" />
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-        <path d="M528 0h-480C21.5 0 0 21.5 0 48v320C0 394.5 21.5 416 48 416h192L224 464H152C138.8 464 128 474.8 128 488S138.8 512 152 512h272c13.25 0 24-10.75 24-24s-10.75-24-24-24H352L336 416h192c26.5 0 48-21.5 48-48v-320C576 21.5 554.5 0 528 0zM512 352H64V64h448V352z" />
-      </svg>
-    </>
+    
+       <Wrapper>
+         <Err></Err>
+         <Code>준<span>비</span><span>중</span></Code>
+        </Wrapper>
   );
 }
 

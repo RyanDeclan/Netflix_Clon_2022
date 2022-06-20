@@ -223,6 +223,13 @@ export enum Department {
   Writing = "Writing",
 }
 
+
+
+
+
+
+
+
 /* TV interface */
 export interface IGetTvResult {
   page:          number;
@@ -382,6 +389,157 @@ export enum ResultOriginalLanguage {
   Th = "th",
 }
 
+export interface ITvRating {
+  results: ITvRatingResult[];
+  id:      number;
+}
+
+export interface ITvRatingResult {
+  iso_3166_1: string;
+  rating:     string;
+}
+
+
+export interface ITvSimilar {
+  page:          number;
+  results:       ITvSimilarResult[];
+  total_pages:   number;
+  total_results: number;
+}
+
+export interface ITvSimilarResult {
+  adult:             boolean;
+  backdrop_path:     string;
+  genre_ids:         number[];
+  id:                number;
+  name:              string;
+  origin_country:    string[];
+  original_language: IOriginalLanguage;
+  original_name:     string;
+  overview:          string;
+  popularity:        number;
+  poster_path:       string;
+  first_air_date:    Date;
+  vote_average:      number;
+  vote_count:        number;
+}
+
+export enum IOriginalLanguage {
+  En = "en",
+}
+
+export interface ITvDetail {
+  adult:                boolean;
+  backdrop_path:        string;
+  created_by:           any[];
+  episode_run_time:     number[];
+  first_air_date:       Date;
+  genres:               Genre[];
+  homepage:             string;
+  id:                   number;
+  in_production:        boolean;
+  languages:            string[];
+  last_air_date:        Date;
+  last_episode_to_air:  TEpisodeToAir;
+  name:                 string;
+  next_episode_to_air:  TEpisodeToAir;
+  networks:             Network[];
+  number_of_episodes:   number;
+  number_of_seasons:    number;
+  origin_country:       string[];
+  original_language:    string;
+  original_name:        string;
+  overview:             string;
+  popularity:           number;
+  poster_path:          string;
+  production_companies: Network[];
+  production_countries: ProductionCountry[];
+  seasons:              Season[];
+  spoken_languages:     SpokenLanguage[];
+  status:               string;
+  tagline:              string;
+  type:                 string;
+  vote_average:         number;
+  vote_count:           number;
+}
+
+export interface Genre {
+  id:   number;
+  name: string;
+}
+
+export interface TEpisodeToAir {
+  air_date:        Date;
+  episode_number:  number;
+  id:              number;
+  name:            string;
+  overview:        string;
+  production_code: string;
+  runtime:         number | null;
+  season_number:   number;
+  still_path:      null | string;
+  vote_average:    number;
+  vote_count:      number;
+}
+
+export interface Network {
+  name:           string;
+  id:             number;
+  logo_path?:     string;
+  origin_country: string;
+  logo?:          Logo;
+}
+
+export interface Logo {
+  path:         string;
+  aspect_ratio: number;
+}
+
+export interface ProductionCountry {
+  iso_3166_1: string;
+  name:       string;
+}
+
+export interface Season {
+  air_date:      Date;
+  episode_count: number;
+  id:            number;
+  name:          string;
+  overview:      string;
+  poster_path:   string;
+  season_number: number;
+  networks:      Network[];
+}
+
+export interface SpokenLanguage {
+  english_name: string;
+  iso_639_1:    string;
+  name:         string;
+}
+
+
+export interface ITvCredit {
+  cast: ICast[];
+  crew: ICast[];
+  id:   number;
+}
+
+export interface ICast {
+  adult:                boolean;
+  gender:               number;
+  id:                   number;
+  known_for_department: string;
+  name:                 string;
+  original_name:        string;
+  popularity:           number;
+  profile_path:         null | string;
+  character?:           string;
+  credit_id:            string;
+  order?:               number;
+  department?:          string;
+  job?:                 string;
+}
+
 
 
 
@@ -434,6 +592,8 @@ export function getMovieTopRated(){
 }
 
 
+
+
 /* TV API */
 
 
@@ -457,6 +617,30 @@ export function getTopLated(){
 
 export function getTvOnAir(){
   return fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvContentRatings(id: number | undefined){
+  return fetch(`${BASE_PATH}/tv/${id}/content_ratings?api_key=${API_KEY}&language=en-US`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvSimilar(id: number | undefined){
+  return fetch(`${BASE_PATH}/tv/${id}/content_ratings?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvDetail(id: number | undefined){
+  return fetch(`${BASE_PATH}/tv/${id}/content_ratings?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvCredits(id: number | undefined){
+  return fetch(`${BASE_PATH}/tv/${id}/credits?api_key=${API_KEY}&language=en-US`).then(
     (response) => response.json()
   );
 }

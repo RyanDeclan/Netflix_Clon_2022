@@ -41,7 +41,7 @@ function BigBoxVideo(props) {
 
   if(props.gre === "tv"){
    data = client.getQueryData(["boxPreViewTv",Number(`${movieId}`)])
-   console.log(data)
+
   }else{
     data = client.getQueryData(["boxPreViewMovie",Number(`${movieId}`)])
   }

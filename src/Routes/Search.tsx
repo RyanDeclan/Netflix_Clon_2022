@@ -110,67 +110,59 @@ function Search() {
     ()=> multiSearch(keyword),
   
   );
-  useEffect(() => {
-    const Delete = data?.results.findIndex(x=> x.poster_path === null )!
-    console.log(Delete)
-    if(Delete !== -1){
-      data?.results.splice(Delete, 1)
-    }
-}, [data]);
-  
+
 
   return (
   
   <Wrapper>
     <Slider>
             
-            <AnimatePresence
-             
-            >
-              <Row
-                
-              >
-                {data?.results.find(x=> x.poster_path)}
-                {data?.results
-                  .slice(0, offset * 2 + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      key={movie.id}
-                      whileHover="hover"
-             
-                      initial="normal"
-                      variants={boxVariants}
-                   
-                      transition={{ type: "tween" }}
-                      bgphoto={makeImagePath(movie.poster_path!, "w500")}
-                    >
-                      <Info
-                        initial="normal"
-                        whileHover="hover"
-                        transition={{ type: "tween" }}
-                        key={movie.id + "bbq"}
-                        variants={infoVariants}
-                        
+      <AnimatePresence>
+        <Row
           
-                      >
-                        {hovers ? (
-                          nums === movie.id ? (
-                            <BoxVideo
-                              id={movie.id}
-                              gre={movie.genre_ids}
-                              title={movie.title}
-                              vote={movie.vote_average}
-                            ></BoxVideo>
-                          ) : null
-                        ) : null}
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-            
-          </Slider>
+        >
+         
+          {data?.results
+            .slice(0, offset * 2 + offset)
+            .map((movie) => (
+              <Box
+                layoutId={movie.id + ""}
+                key={movie.id}
+                whileHover="hover"
+       
+                initial="normal"
+                variants={boxVariants}
+             
+                transition={{ type: "tween" }}
+                bgphoto={makeImagePath(movie.poster_path!, "w500")}
+              >
+                <Info
+                  initial="normal"
+                  whileHover="hover"
+                  transition={{ type: "tween" }}
+                  key={movie.id + "bbq"}
+                  variants={infoVariants}
+                  
+    
+                >
+                  {hovers ? (
+                    nums === movie.id ? (
+                      <BoxVideo
+                        id={movie.id}
+                        gre={movie.genre_ids}
+                        title={movie.title}
+                        vote={movie.vote_average}
+                      ></BoxVideo>
+                    ) : null
+                  ) : null}
+                </Info>
+              </Box>
+            ))}
+        </Row>
+      </AnimatePresence>
+      
+    </Slider>
+    
   </Wrapper>
   
   );

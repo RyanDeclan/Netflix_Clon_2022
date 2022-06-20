@@ -4,19 +4,16 @@ import { useQuery } from "react-query";
 import { useNavigate, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import {
-  getMovies,
-  IGetMoviesResult,
-  getMovieVideo,
-  IGetMovieVideo,
   getTvPopular,
   getTvVideo,
   IGetTvResult,
   IGetTvVideo,
+  ITvTopRated,
 } from "../api";
 import { makeImagePath } from "../utils";
 import MainTrailer from "./MainTrailer";
 import ErrorBoundary from "./errorboundary";
-import UpComginMovie from "../Components/Movie/UpComingMovie";
+
 import BoxVideo from "./boxVideo";
 import BigBoxVideo from "./bigBoxVideo";
 import BigBoxInfo from "../Components/BigBoxInfo";
@@ -258,18 +255,27 @@ function Tv() {
   };
   const onOverlayClick = () => navigate("/tv");
 
-  const upcomingData = client.getQueryData<IGetMoviesResult>(["movies","upcoming"])
+  const topRatedData = client.getQueryData<IGetTvResult>(["TV","TopLated"])
+  const onAirData = client.getQueryData<IGetTvResult>(["TV","OnAir"])
   let clickedTv =
     bigTvMatch?.params.tvId &&
     data?.results.find(
       (tv) => tv.id + "" === bigTvMatch.params.tvId
     );
-  /* if(!clickedMovie){
-    clickedMovie = bigTvMatch?.params.tvId &&
-    upcomingData?.results.find(
-      (movie) => movie.id + "" === bigTvMatch.params.tvId
+
+  if(!clickedTv){
+    clickedTv = bigTvMatch?.params.tvId &&
+    topRatedData?.results.find(
+      (tv) => tv.id + "" === bigTvMatch.params.tvId
     );
-  }   */
+  }
+  if(!clickedTv){
+    clickedTv = bigTvMatch?.params.tvId &&
+    onAirData?.results.find(
+      (tv) => tv.id + "" === bigTvMatch.params.tvId
+    );
+  }   
+ 
   
   const [hovers, setHovers] = useState(false);
   const [nums, setnums] = useState(0);
