@@ -8,7 +8,7 @@ import { isCheckUrlAtom } from "./atoms";
 let cElement = null;
 
 function Pause(props) {
-  const [isToggle, setIsToggle] = useState(true);
+  const [isToggle, setIsToggle] = useState(false);
 
   const toglles = () => {
     setIsToggle(!isToggle);
@@ -153,7 +153,7 @@ const BgControlBtn = styled.div`
 `;
 
 function MainTrailer(props) {
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
 
   const togglePause = () => {
     setIsPaused(!isPaused);
