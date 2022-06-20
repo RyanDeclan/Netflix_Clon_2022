@@ -19,7 +19,6 @@ import {
   ITvSimilar,
   Results,
 } from "../../api";
-import "../fonts/fonts.css";
 import { makeImagePath } from "../../utils";
 import ErrorBoundary from "../../Routes/errorboundary";
 export interface kaka {
@@ -189,20 +188,15 @@ function TvBigBoxInfo({ base: data }: Toto) {
     );
 
   let grade = certification?.results.find((x) => x.iso_3166_1 === "US")
-    ?.rating[0]
+    ?.rating
     if (!grade) {
       grade = certification?.results.find((x) => x.iso_3166_1 === "GB")
-        ?.rating[0]
+        ?.rating
     }
   if (!grade) {
     grade = certification?.results.find((x) => x.iso_3166_1 === "FR")
-      ?.rating[0]
+      ?.rating
   }
-  if (!grade) {
-    grade = certification?.results.find((x) => x.iso_3166_1 === "US")
-      ?.rating[1]
-  }
-  
   const { data: similarTv, isLoading } = useQuery<ITvSimilar>(
     ["similarTv", data.id],
     async () => await getTvSimilar(data.id)
@@ -224,7 +218,7 @@ function TvBigBoxInfo({ base: data }: Toto) {
 
   let runtime = tvDetails?.episode_run_time;
 
-  
+
   const min = runtime
   let toto = data.name.toString().split(" ");
 
@@ -239,7 +233,7 @@ function TvBigBoxInfo({ base: data }: Toto) {
       <FistLine>
         <YearAndCertification>
           <Year>{year?.toString().slice(0, 4)}</Year>
-          {grade === "TV-M" ? (
+          {grade === "TV-MA" ? (
             <img
               src="https://img.icons8.com/ios/50/000000/18.png"
               style={{
@@ -251,20 +245,31 @@ function TvBigBoxInfo({ base: data }: Toto) {
               }}
               alt="18"
             />
-          ) : grade === "PG-13" ? (
+          ) : grade === "TV-14" ? (
             <img
-              src="https://img.icons8.com/ios/50/000000/12.png"
+              src="https://img.icons8.com/ios/50/000000/14.png"
               style={{
                 width: "1.5vw",
                 height: "3vh",
                 backgroundColor: "green",
                 borderRadius: "0.2vw",
               }}
-              alt="13"
+              alt="14"
             />
-          ) : grade === "PG" ? (
+            ) : grade === "TV-PG" ? (
+              <img
+                src="https://img.icons8.com/ios/50/000000/12.png"
+                style={{
+                  width: "1.5vw",
+                  height: "3vh",
+                  backgroundColor: "green",
+                  borderRadius: "0.2vw",
+                }}
+                alt="12"
+              />
+          ) : grade === "TV-G" ? (
             <img
-             alt="pg"
+             alt="ALL"
               style={{
                 width: "1.5vw",
                 height: "3vh",
@@ -273,8 +278,19 @@ function TvBigBoxInfo({ base: data }: Toto) {
               }}
               src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/000000/external-All-miscellany-texts-and-badges-bearicons-detailed-outline-bearicons.png"
             />
+            ) : grade === "TV-Y" ? (
+              <img
+               alt="ALL"
+                style={{
+                  width: "1.5vw",
+                  height: "3vh",
+                  backgroundColor: "yellow",
+                  borderRadius: "0.2vw",
+                }}
+                src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/000000/external-All-miscellany-texts-and-badges-bearicons-detailed-outline-bearicons.png"
+              />
           ) : null}
-          <RunTime>{`  ${min}분`}</RunTime>
+           <RunTime>{min ? `${min}분` : null}</RunTime> 
         </YearAndCertification>
         {director ? (
           <div

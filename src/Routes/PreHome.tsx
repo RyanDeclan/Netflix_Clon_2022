@@ -262,14 +262,20 @@ function PreHome() {
 
     const { data: firstVideoData, isLoading: videoIsLoading } = useQuery<IGetMoviesResult>(
         ["movies", "nowPlaying"],
-        async () => await getMovies()
+        async () => await getMovies(),
+        {
+            cacheTime: 1000 * 60 * 60
+        }
         );
         const movieId = firstVideoData?.results[0].id;
         
     
         const { data: videoData, isLoading: videoLoading } = useQuery<IGetMovieVideo>(
         ["bannermovies", movieId],
-        () => getMovieVideo(movieId)
+        () => getMovieVideo(movieId),
+        {
+            cacheTime: 1000 * 60 * 60
+        }
         );    
 
     return (

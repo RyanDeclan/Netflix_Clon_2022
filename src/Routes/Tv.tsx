@@ -22,6 +22,7 @@ import {client} from "../index"
 import TvBoxVideo from "./TvBoxVideo";
 import TvTopRated from "../Components/Tv/TvTopRated";
 import TvOnAir from "../Components/Tv/TvOnAir";
+import TvBigBoxInfo from "../Components/Tv/TvBigBoxInfo";
 
 const Wrapper = styled.div`
   background: transparent;
@@ -275,6 +276,8 @@ function Tv() {
       (tv) => tv.id + "" === bigTvMatch.params.tvId
     );
   }   
+
+
  
   
   const [hovers, setHovers] = useState(false);
@@ -459,7 +462,7 @@ function Tv() {
                   {clickedTv && (
                     <>
                       <BigBoxVideo id={clickedTv.id} gre="tv"></BigBoxVideo> 
-                    
+                      <TvBigBoxInfo base={clickedTv} ></TvBigBoxInfo>
                       
                     </>
                   )}

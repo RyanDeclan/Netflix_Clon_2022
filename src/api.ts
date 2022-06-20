@@ -628,13 +628,13 @@ export function getTvContentRatings(id: number | undefined){
 }
 
 export function getTvSimilar(id: number | undefined){
-  return fetch(`${BASE_PATH}/tv/${id}/content_ratings?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+  return fetch(`${BASE_PATH}/tv/${id}/similar?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
     (response) => response.json()
   );
 }
 
 export function getTvDetail(id: number | undefined){
-  return fetch(`${BASE_PATH}/tv/${id}/content_ratings?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+  return fetch(`${BASE_PATH}/tv/${id}?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
     (response) => response.json()
   );
 }
