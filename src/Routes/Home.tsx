@@ -18,11 +18,12 @@ import BigBoxVideo from "./bigBoxVideo";
 import BigBoxInfo from "../Components/BigBoxInfo";
 import "../fonts/fonts.css";
 import {client} from "../index"
+import TopRated from "../Components/Movie/TopRated";
 
 const Wrapper = styled.div`
   background: transparent;
   padding-bottom: 300px;
-  height: 200vh;
+  height: 280vh;
   overflow: hidden;
 `;
 
@@ -412,6 +413,7 @@ function Home() {
             </motion.svg>
           </Slider>
           <UpComginMovie></UpComginMovie>
+          <TopRated></TopRated>
           <AnimatePresence>
             {bigMovieMatch ? (
               <>

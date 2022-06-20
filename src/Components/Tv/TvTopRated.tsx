@@ -1,24 +1,25 @@
 import { useQuery } from "react-query";
-import { getUpcomingMovies, IGetUpcomingMovie } from "../../api";
+import { getTopLated, ITvTopRated } from "../../api";
 import { AnimatePresence, motion,} from "framer-motion";
 import styled from "styled-components";
 import { makeImagePath } from "../../utils";
-import { useState } from "react";
-import BoxVideo from "../../Routes/boxVideo";
-import {  useMatch, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import {   useNavigate } from "react-router-dom";
+import TvBoxVideo from "../../Routes/TvBoxVideo";
 
 
 //position : relative를 해줘야 밑에 스크롤이 안 생긴다.
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 95vh;
  
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  top: 132px;
+  top: 160px;
 
 `;
 
@@ -131,11 +132,22 @@ const Overlay = styled(motion.div)`
 
 
 //아 파일이름하고 function을 같게 해야하구나
-function UpComginMovie() {
-  const { data, isLoading } = useQuery<IGetUpcomingMovie>(
-    ["movies", "upcoming"],
-    async () => await getUpcomingMovies()
+function TvTopRated() {
+  const { data, isLoading } = useQuery<ITvTopRated>(
+    ["TV", "TopLated"],
+    async () => await getTopLated(),
+    {
+
+    }
   );
+  useEffect(() => {
+    const tvDelete = data?.results.findIndex(x=> x.poster_path === null )!
+    if(tvDelete !== -1){
+      data?.results.splice(tvDelete, 1)
+    }
+}, [data]);
+
+
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [back, setBack] = useState(false);
@@ -194,7 +206,7 @@ function UpComginMovie() {
   const navigate = useNavigate();
 
   const onBoxClicked = (movieId: number) => {
-    navigate(`/home/movies/${movieId}`);
+    navigate(`/tv/tvs/${movieId}`);
   };
 
   const [bigBox, setBigBox] = useState(false);
@@ -208,7 +220,7 @@ function UpComginMovie() {
 
   return (
     <>
-      <UpComingTitle>개봉예정작</UpComingTitle>
+      <UpComingTitle>평판 좋은 시리즈</UpComingTitle>
       <Wrapper>
         <motion.svg
           whileHover="hover"
@@ -258,7 +270,7 @@ function UpComginMovie() {
                     onBoxClicked(x.id);
                     clickBigBox();
                   }}
-                  bgphoto={makeImagePath(x.poster_path, "w500")}
+                  bgphoto={makeImagePath(x.poster_path!, "w500")}
                 >
                   <Info
                     initial="normal"
@@ -274,12 +286,12 @@ function UpComginMovie() {
                   >
                     {hovers ? (
                       nums === x.id ? (
-                        <BoxVideo
+                        <TvBoxVideo
                           id={x.id}
                           gre={x.genre_ids}
-                          title={x.title}
+                          title={x.name}
                           vote={x.vote_average}
-                        ></BoxVideo>
+                        ></TvBoxVideo>
                       ) : null
                     ) : null}
                   </Info>
@@ -313,4 +325,4 @@ function UpComginMovie() {
   );
 }
 
-export default UpComginMovie;
+export default TvTopRated;

@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getUpcomingMovies, IGetUpcomingMovie } from "../../api";
+import { getMovieTopRated, getUpcomingMovies, IGetUpcomingMovie } from "../../api";
 import { AnimatePresence, motion,} from "framer-motion";
 import styled from "styled-components";
 import { makeImagePath } from "../../utils";
@@ -11,14 +11,14 @@ import {  useMatch, useNavigate } from "react-router-dom";
 //position : relative를 해줘야 밑에 스크롤이 안 생긴다.
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 80vh;
  
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  top: 132px;
+  top: -147px;
 
 `;
 
@@ -37,12 +37,11 @@ const Info = styled(motion.div)`
 
 const UpComingTitle = styled.div`
   position:absolute;
-  margin-top: 39vh;
   font-size: 2.3em;
   font-family: "twaysky";
   margin-left: 3%;
   
-  width:100%;
+  width:80%;
 
 
 `;
@@ -131,10 +130,10 @@ const Overlay = styled(motion.div)`
 
 
 //아 파일이름하고 function을 같게 해야하구나
-function UpComginMovie() {
+function TopRated() {
   const { data, isLoading } = useQuery<IGetUpcomingMovie>(
-    ["movies", "upcoming"],
-    async () => await getUpcomingMovies()
+    ["movies", "TopRated"],
+    async () => await getMovieTopRated()
   );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -208,7 +207,7 @@ function UpComginMovie() {
 
   return (
     <>
-      <UpComingTitle>개봉예정작</UpComingTitle>
+      <UpComingTitle>평판이 좋은 영화</UpComingTitle>
       <Wrapper>
         <motion.svg
           whileHover="hover"
@@ -313,4 +312,4 @@ function UpComginMovie() {
   );
 }
 
-export default UpComginMovie;
+export default TopRated;

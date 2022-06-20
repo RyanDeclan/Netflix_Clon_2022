@@ -37,8 +37,14 @@ function BigBoxVideo(props) {
   
   const movieId = props.id;
   // api를 사용할 필요없이 바로 쿼리키를 통해서 가져옴 
-  const data = client.getQueryData(["boxPreViewMovie",Number(`${movieId}`)])
-  
+  let data = ""
+
+  if(props.gre === "tv"){
+   data = client.getQueryData(["boxPreViewTv",Number(`${movieId}`)])
+   console.log(data)
+  }else{
+    data = client.getQueryData(["boxPreViewMovie",Number(`${movieId}`)])
+  }
 
   const bannerVideo = data?.results[0]?.key;
 
@@ -67,9 +73,7 @@ function BigBoxVideo(props) {
   return (
     <>
       <TopCover></TopCover>
-
-      <YouTube videoId={`${null}`} opts={opts} onReady={_onReady} />
-
+      <YouTube videoId={`${trailer}`} opts={opts} onReady={_onReady} />
       <BottomCover></BottomCover>
     </>
   );

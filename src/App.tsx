@@ -21,7 +21,9 @@ function App() {
             <Route path="home" element={<Home />}>
               <Route path="movies/:movieId" element={<Home/>} />
             </Route>
-            <Route path="tv" element={<Tv />}></Route>
+            <Route path="tv" element={<Tv />}>
+              <Route path="tvs/:tvId" element={<Tv/>} />
+            </Route>
             <Route path="movie" element={<Movie />}></Route>
             <Route path="search" element={<Search />}></Route>
             <Route path="join" element={<Join />}></Route>
@@ -29,6 +31,7 @@ function App() {
             <Route path={"*"} element={<Error/>}></Route>
           </Routes>
         </Router>
+        <ReactQueryDevtools initialIsOpen={true} />
         
     </>
   );

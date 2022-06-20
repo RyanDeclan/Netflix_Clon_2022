@@ -1,86 +1,74 @@
 import YouTube from "react-youtube";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { getMovieVideo } from "../api";
+import {  getTvVideo } from "../api";
 import "../fonts/fonts.css";
 const Igenres = {
   genres: [
     {
-      id: 28,
-      name: "액션",
-    },
-    {
-      id: 12,
-      name: "모험",
-    },
-    {
-      id: 16,
-      name: "애니메이션",
-    },
-    {
-      id: 35,
-      name: "코미디",
-    },
-    {
-      id: 80,
-      name: "범죄",
-    },
-    {
-      id: 99,
-      name: "다큐멘터리",
-    },
-    {
-      id: 18,
-      name: "드라마",
-    },
-    {
-      id: 10751,
-      name: "가족",
-    },
-    {
-      id: 14,
-      name: "판타지",
-    },
-    {
-      id: 36,
-      name: "역사",
-    },
-    {
-      id: 27,
-      name: "공포",
-    },
-    {
-      id: 10402,
-      name: "음악",
-    },
-    {
-      id: 9648,
-      name: "미스테리",
-    },
-    {
-      id: 10749,
-      name: "로맨스",
-    },
-    {
-      id: 878,
-      name: "공상과학",
-    },
-    {
-      id: 10770,
-      name: "TV Movie",
-    },
-    {
-      id: 53,
-      name: "스릴러",
-    },
-    {
-      id: 10752,
-      name: "전쟁",
-    },
-    {
-      id: 37,
-      name: "Western",
-    },
+        id: 10759,
+        name: "액션 & 모험"
+        },
+        {
+        id: 16,
+        name: "애니"
+        },
+        {
+        id: 35,
+        name: "코미디"
+        },
+        {
+        id: 80,
+        name: "공포"
+        },
+        {
+        id: 99,
+        name: "다큐멘터리"
+        },
+        {
+        id: 18,
+        name: "드라마"
+        },
+        {
+        id: 10751,
+        name: "가족"
+        },
+        {
+        id: 10762,
+        name: "키즈"
+        },
+        {
+        id: 9648,
+        name: "미스터리"
+        },
+        {
+        id: 10763,
+        name: "News"
+        },
+        {
+        id: 10764,
+        name: "리얼리티"
+        },
+        {
+        id: 10765,
+        name: "SF 판타지"
+        },
+        {
+        id: 10766,
+        name: "연속극"
+        },
+        {
+        id: 10767,
+        name: "Talk"
+        },
+        {
+        id: 10768,
+        name: "전쟁 & 정치"
+        },
+        {
+        id: 37,
+        name: "Western"
+        }
   ],
 };
 
@@ -96,15 +84,15 @@ const MovieTitle = styled.span`
 
 const Imoge = styled.div`
   padding: 0px;
-  margin: 0px;
+  margin: 0px, 2px;
   height: 100%;
   width: 100%;
   position: absolute;
-  top: -5%;
+  top: -15%;
 `;
 
 const Starts = styled.div`
-  margin-top: 2.8vh;
+  margin-top: 2vh;
   margin-left: 0.7vw;
 `;
 
@@ -132,7 +120,7 @@ const Coco = styled.div`
     align-items: center;
   }
   &:last-child {
-    height: 32%;
+    height: 28%;
     position: absolute;
     bottom: 0px;
     display: flex;
@@ -141,7 +129,7 @@ const Coco = styled.div`
   }
 `;
 
-function BoxVideo(props) {
+function TvBoxVideo(props) {
   const voteStars = () => {
     const result = [];
     for (let i = 1; i <= Math.floor(props.vote / 2); i++) {
@@ -178,10 +166,10 @@ function BoxVideo(props) {
     }
     return result;
   };
-  const movieId = props.id;
+  const tvId = props.id;
   const { data: videoData, isLoading: videoLoading } = useQuery(
-    ["boxPreViewMovie", movieId],
-    () => getMovieVideo(movieId),
+    ["boxPreViewTv", tvId],
+    () => getTvVideo(tvId),
     {
       staleTime: 60 * 3000,
     }
@@ -284,4 +272,4 @@ function BoxVideo(props) {
   );
 }
 
-export default BoxVideo;
+export default TvBoxVideo;

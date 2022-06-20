@@ -223,6 +223,168 @@ export enum Department {
   Writing = "Writing",
 }
 
+/* TV interface */
+export interface IGetTvResult {
+  page:          number;
+  results:       Results[];
+  total_pages:   number;
+  total_results: number;
+}
+
+export interface Results {
+  backdrop_path:     string;
+  first_air_date:    Date;
+  genre_ids:         number[];
+  id:                number;
+  name:              string;
+  origin_country:    string[];
+  original_language: string;
+  original_name:     string;
+  overview:          string;
+  popularity:        number;
+  poster_path:       null | string;
+  vote_average:      number;
+  vote_count:        number;
+}
+
+
+export interface IGetTvVideo {
+  id:      number;
+  results: Resultss[];
+}
+
+export interface Resultss {
+  iso_639_1:    string;
+  iso_3166_1:   string;
+  name:         string;
+  key:          string;
+  site:         string;
+  size:         number;
+  type:         string;
+  official:     boolean;
+  published_at: Date;
+  id:           string;
+}
+
+
+export interface ITvTopRated {
+  page:          number;
+  results:       ITvResult[];
+  total_pages:   number;
+  total_results: number;
+}
+
+export interface ITvResult {
+  backdrop_path:     null | string;
+  first_air_date:    Date;
+  genre_ids:         number[];
+  id:                number;
+  name:              string;
+  origin_country:    string[];
+  original_language: string;
+  original_name:     string;
+  overview:          string;
+  popularity:        number;
+  poster_path:       string;
+  vote_average:      number;
+  vote_count:        number;
+}
+
+export interface ITvOnAir {
+  page:          number;
+  results:       ITvOnAirResult[];
+  total_pages:   number;
+  total_results: number;
+}
+
+export interface ITvOnAirResult {
+  backdrop_path:     null | string;
+  first_air_date:    Date;
+  genre_ids:         number[];
+  id:                number;
+  name:              string;
+  origin_country:    string[];
+  original_language: string;
+  original_name:     string;
+  overview:          string;
+  popularity:        number;
+  poster_path:       null | string;
+  vote_average:      number;
+  vote_count:        number;
+}
+
+
+export interface ISearch {
+  page:          number;
+  results:       SearchResult[];
+  total_pages:   number;
+  total_results: number;
+}
+
+export interface SearchResult {
+  adult?:                boolean;
+  gender?:               number;
+  id:                    number;
+  known_for?:            KnownFor[];
+  known_for_department?: string;
+  media_type:            MediaType;
+  name?:                 string;
+  popularity:            number;
+  profile_path?:         null | string;
+  backdrop_path?:        null | string;
+  first_air_date?:       Date;
+  genre_ids?:            number[];
+  origin_country?:       string[];
+  original_language?:    ResultOriginalLanguage;
+  original_name?:        string;
+  overview?:             string;
+  poster_path?:          null | string;
+  vote_average?:         number;
+  vote_count?:           number;
+  original_title?:       string;
+  release_date?:         Date;
+  title?:                string;
+  video?:                boolean;
+}
+
+export interface KnownFor {
+  adult:             boolean;
+  backdrop_path?:    null | string;
+  genre_ids:         number[];
+  id:                number;
+  media_type:        MediaType;
+  original_language: KnownForOriginalLanguage;
+  original_title:    string;
+  overview:          string;
+  poster_path?:      null | string;
+  release_date:      Date;
+  title:             string;
+  video:             boolean;
+  vote_average:      number;
+  vote_count:        number;
+}
+
+export enum MediaType {
+  Movie = "movie",
+  Person = "person",
+  Tv = "tv",
+}
+
+export enum KnownForOriginalLanguage {
+  CN = "cn",
+  En = "en",
+  Zh = "zh",
+}
+
+export enum ResultOriginalLanguage {
+  En = "en",
+  Es = "es",
+  Th = "th",
+}
+
+
+
+
 export function getMovies() {
   return fetch(
     `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko&page=1®ion=KR`
@@ -261,6 +423,49 @@ export function getMovieDetails(id: Number | undefined) {
 
 export function getMovieCredits(id: Number | undefined) {
   return fetch(`${BASE_PATH}/movie/${id}/credits?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getMovieTopRated(){
+  return fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+
+/* TV API */
+
+
+export function getTvPopular() {
+  return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvVideo(id: number | undefined) {
+  return fetch(`${BASE_PATH}/tv/${id}/videos?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTopLated(){
+  return fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvOnAir(){
+  return fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&language=ko&page=1®ion=KR`).then(
+    (response) => response.json()
+  );
+}
+
+
+/* search  */
+
+export function multiSearch(query : string | undefined){
+  return fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&language=ko&query=${query}&page=1®ion=KR&include_adult=false`).then(
     (response) => response.json()
   );
 }

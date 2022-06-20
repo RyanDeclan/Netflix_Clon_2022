@@ -1,4 +1,3 @@
-
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import {
@@ -11,10 +10,10 @@ import {
   IReleaseDate,
   ISimilarMovies,
   Results,
-} from "../api";
+} from "../../api";
 import "../fonts/fonts.css";
-import { makeImagePath } from "../utils";
-import ErrorBoundary from "../Routes/errorboundary";
+import { makeImagePath } from "../../utils";
+import ErrorBoundary from "../../Routes/errorboundary";
 export interface KaKa {
   certi: Resultss;
 }
@@ -174,7 +173,7 @@ const FistLine = styled.div`
   margin-top: 1vh;
 `;
 
-function BigBoxInfo({ soso: data }: Toto) {
+function TvBigBoxInfo({ soso: data }: Toto) {
   const date = data.release_date;
   const { data: certification, isLoading: certiIsLoding } =
     useQuery<IReleaseDate>(
@@ -304,4 +303,4 @@ function BigBoxInfo({ soso: data }: Toto) {
   );
 }
 
-export default BigBoxInfo;
+export default TvBigBoxInfo;

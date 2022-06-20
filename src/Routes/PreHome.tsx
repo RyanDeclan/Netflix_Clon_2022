@@ -188,7 +188,42 @@ const Clock = styled.div`
 	pointer-events: none;
 ` 
 
+const Icon = styled(motion.div)`
+    background-image: url(https://static.toss.im/assets/homepage/simplicity21/phase2/apng-ex.png);
+    background-size: 100% auto;
+    background-position: left top;
+    width: 100px;
+    height: 100px;
+    
+    
+`   
+const iconVariants = {
+        normal: {
+          scale: 1,
+        },
+        hover: {
+        
+          scale: 1.3,
+          transition: { delay: 0.1, type: "tween", duration: 0.3 },
+        },
+      };
 
+
+const Box = styled.div`
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: -120px;
+
+`
+
+const Text = styled.div`
+    width: 200px;
+    height: 100px;
+    display:flex;
+    justify-content: start;
+    align-items:center;
+`
 
 
 
@@ -239,7 +274,20 @@ function PreHome() {
                 <Plant3></Plant3>
                 <Clock></Clock>
                 {count > 3 ?
-                 <Link to="/home" style={{position: "absolute", bottom: "-70px"}}> 지금 바로 즐기로 가기 </Link>
+               
+                <Link to="home" style={{position: "absolute",
+                    bottom: "-130px"}}>
+                        <Icon 
+                        variants={iconVariants} 
+                        whileHover="hover"  
+                        initial="normal" 
+                        transition={{ type: "tween" }}
+                        >  
+                        </Icon>
+                </Link>   
+                        
+                    
+                
                  : null
                 }
                
